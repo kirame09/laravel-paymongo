@@ -1,0 +1,42 @@
+{
+    "name": "kirame/laravel-paymongo",
+    "description": "Laravel package for PayMongo payment gateway integration",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kirame"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/http": "^11.0|^12.0",
+        "illuminate/support": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kirame\\PayMongo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kirame\\PayMongo\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kirame\\PayMongo\\PayMongoServiceProvider"
+            ],
+            "aliases": {
+                "PayMongo": "Kirame\\PayMongo\\Facades\\PayMongo"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
