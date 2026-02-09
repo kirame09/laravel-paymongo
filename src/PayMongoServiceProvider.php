@@ -14,6 +14,8 @@ class PayMongoServiceProvider extends ServiceProvider
             return new PayMongo(
                 secretKey: config('paymongo.secret_key', ''),
                 baseUrl: config('paymongo.base_url', 'https://api.paymongo.com/v1'),
+                timeout: config('paymongo.timeout', 15),
+                retries: config('paymongo.retries', 2),
             );
         });
 

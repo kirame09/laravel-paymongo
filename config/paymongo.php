@@ -60,4 +60,26 @@ return [
     */
 
     'currency' => 'PHP',
+
+    /*
+    |--------------------------------------------------------------------------
+    | HTTP Timeout
+    |--------------------------------------------------------------------------
+    |
+    | Maximum number of seconds to wait for a response from PayMongo.
+    |
+    */
+
+    'timeout' => env('PAYMONGO_TIMEOUT', 15),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Retry Attempts
+    |--------------------------------------------------------------------------
+    |
+    | Number of times to retry a failed request before throwing an exception.
+    |
+    */
+
+    'retries' => env('PAYMONGO_RETRIES', 2),
 ];

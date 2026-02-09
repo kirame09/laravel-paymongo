@@ -9,8 +9,14 @@ class PayMongo
 {
     public function __construct(
         protected string $secretKey,
-        protected string $baseUrl = 'https://api.paymongo.com/v1'
-    ) {}
+        protected string $baseUrl = 'https://api.paymongo.com/v1',
+        protected int $timeout = 15,
+        protected int $retries = 2
+    ) {
+        if (empty($this->secretKey)) {
+            throw new PayMongoException('PayMongo secret key is not configured. Set PAYMONGO_SECRET_KEY in your .env file.');
+        }
+    }
 
     // ==================
     // Customers
@@ -198,38 +204,46 @@ class PayMongo
         return $this->baseUrl;
     }
 
+    protected function request(): \Illuminate\Http\Client\PendingRequest
+    {
+        return Http::withBasicAuth($this->secretKey, '')
+            ->timeout($this->timeout)
+            ->retry($this->retries, 100, throw: false);
+    }
+
     protected function get(string $endpoint): array
     {
-        $response = Http::withBasicAuth($this->secretKey, '')
-            ->get("{$this->baseUrl}{$endpoint}");
+        $response = $this->request()->get("{$this->baseUrl}{$endpoint}");
 
         if (! $response->successful()) {
-            throw new PayMongoException(
-                "PayMongo API error: {$response->body()}",
-                $response->status(),
-                $response->json()
-            );
+            $this->throwException($response);
         }
 
-        return $response->json('data');
+        return $response->json('data') ?? [];
     }
 
     protected function post(string $endpoint, array $data = []): array
     {
-        $request = Http::withBasicAuth($this->secretKey, '');
-
         $response = empty($data)
-            ? $request->post("{$this->baseUrl}{$endpoint}")
-            : $request->post("{$this->baseUrl}{$endpoint}", $data);
+            ? $this->request()->post("{$this->baseUrl}{$endpoint}")
+            : $this->request()->post("{$this->baseUrl}{$endpoint}", $data);
 
         if (! $response->successful()) {
-            throw new PayMongoException(
-                "PayMongo API error: {$response->body()}",
-                $response->status(),
-                $response->json()
-            );
+            $this->throwException($response);
         }
 
-        return $response->json('data');
+        return $response->json('data') ?? [];
+    }
+
+    protected function throwException(\Illuminate\Http\Client\Response $response): never
+    {
+        $body = $response->json();
+        $detail = $body['errors'][0]['detail'] ?? $response->body();
+
+        throw new PayMongoException(
+            "PayMongo API error: {$detail}",
+            $response->status(),
+            $body
+        );
     }
 }
