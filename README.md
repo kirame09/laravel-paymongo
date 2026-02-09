@@ -1,5 +1,9 @@
 # Laravel PayMongo
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kirame/laravel-paymongo.svg)](https://packagist.org/packages/kirame/laravel-paymongo)
+[![GitHub Tests](https://github.com/kirame09/laravel-paymongo/actions/workflows/tests.yml/badge.svg)](https://github.com/kirame09/laravel-paymongo/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 A Laravel package for integrating with the [PayMongo](https://paymongo.com) payment gateway API.
 
 Supports all PayMongo payment methods including GCash, Maya, GrabPay, Card, and QR Ph.
