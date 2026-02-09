@@ -37,6 +37,9 @@
             }
         }
     },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
