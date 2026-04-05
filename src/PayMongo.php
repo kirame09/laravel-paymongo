@@ -86,6 +86,11 @@ class PayMongo
         return $this->get("/checkout_sessions/{$id}");
     }
 
+    public function expireCheckoutSession(string $id): array
+    {
+        return $this->post("/checkout_sessions/{$id}/expire");
+    }
+
     // ==================
     // Payments
     // ==================
